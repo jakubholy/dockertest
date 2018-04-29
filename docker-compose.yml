@@ -1,0 +1,40 @@
+version: '3'
+services:
+    rabbit:
+        image: rabbitmq
+        volumes:
+            - ./rabbit/data:/var/lib/rabbitmq
+    redis:
+        image: "redis"
+        volumes:
+            - ./redis/data/:/data
+    opensuse:
+        build: opensuse
+    mariadb:
+        image: mariadb
+        volumes:
+            - ./mariadb/data:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=admin
+    database-installer:
+        build: database-installer
+        environment:
+            - ROOT_PASSWORD=admin
+            - DB_NAME=cms_engine
+            - DB_USER=db_user
+            - DB_PASSWORD=poaswort
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.2.4
+        container_name: elasticsearch
+        environment:
+          - discovery.type=single-node
+            #- bootstrap.memory_lock=true
+            #- "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        volumes:
+            - ./elasticsearch/data/:/usr/share/elasticsearch/data
+
+
