@@ -1,5 +1,12 @@
 version: '3'
 services:
+    web:
+        build: nginx
+        volumes:
+            - ./nginx/cms-engine.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "8080:80"
+        
     rabbit:
         image: rabbitmq
         volumes:
@@ -10,6 +17,8 @@ services:
             - ./redis/data/:/data
     opensuse:
         build: opensuse
+    cms-engine:
+        build: cms-engine
     mariadb:
         image: mariadb
         volumes:
